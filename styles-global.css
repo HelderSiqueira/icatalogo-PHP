@@ -46,7 +46,7 @@ footer {
   background-color: var(--backgroundSecondary);
 }
 
-input {
+input, select {
   padding: 6px 8px;
 
   border: 2px solid transparent;

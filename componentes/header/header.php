@@ -1,11 +1,29 @@
 <?php
-    session_start();
+    if(!isset($_SESSION))session_start();
 ?>
 
-<link href="/web-backend-a/icatalogo-parte1/componentes/header/header.css" rel="stylesheet" />
+<link href="/web-backend-a/icatalogo/componentes/header/header.css" rel="stylesheet" />
+<?php
+//verifica se ha mensagem na sessao
+if(isset($_SESSION["mensagem"])){
+?>    
+    <div class="mensagem">
+        <?= $_SESSION["mensagem"]; ?>
+    </div>  
+    <script lang="javascript">
+        setTimeout(() => {
+            document.querySelector(".mensagem").style.display = "nome";
+        }, 4000);
+    </script>
+<?php
+    //retira mensagem da sessao
+    unset($_SESSION["mensagem"]);
+}
+?>
+</div>
 <header class="header">
     <figure>
-        <img src="/web-backend-a/icatalogo-parte1/imgs/logo.png" />
+        <img src="/web-backend-a/icatalogo/imgs/logo.png" />
     </figure>
     <input type="search" placeholder="Pesquisar" />
     <?php

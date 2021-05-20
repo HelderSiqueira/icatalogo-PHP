@@ -45,12 +45,16 @@ switch ($_POST["acao"]) {
         //verificar se o usuário existe e a senha está correta
         if(!$usuario || !password_verify($senha, $usuario["senha"])){
             //se a senha estiver errada, criar uma mensagem de "usuário e/ou senha inválidos"
-            $erros = "Usuário e/ou senha inválidos";
+            $mensagem = "Usuário e/ou senha inválidos";
         }else{
             //se estiver correta, salvar o id e o nome do usuário na sessão $_SESSION
             $_SESSION["usuarioId"] = $usuario["id"];
             $_SESSION["usuarioNome"] = $usuario["nome"];
+
+            $mensagem = "Bem vindo, " . $usuario["nome"];
         }
+
+        $_SESSION["mensagem"] = $mensagem;
 
         //redirecionar para a tela de listagem de produtos
         header("location:../../produtos/index.php");

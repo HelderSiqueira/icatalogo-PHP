@@ -1,7 +1,22 @@
 <?php
 session_start();
 
-echo session_save_path();
+//verifica se o usuario esta logado
+if(!isset($_SESSION["usuarioId"])){
+  
+  //declara e coloca um erro nas mensagens da sessao 
+  $_SESSION["mensagem"] = "Acesso negado, você precisa logar.";
+
+  //redirecionamento 
+  header("location: ../index.php");
+}
+
+require("../../database/conexao.php");
+
+$sql = "SELECT * FROM tbl_categoria";
+
+$resultado = mysqli_query($conexao, $sql);
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -15,13 +30,13 @@ echo session_save_path();
 </head>
 
 <body>
-  <header>
-    <input type="search" placeholder="Pesquisar" />
-  </header>
+    <?php
+    include("../../componentes/header/header.php");
+    ?>
   <div class="content">
     <section class="produtos-container">
       <main>
-        <form class="form-produto" method="POST" action="../acoes.php">
+        <form class="form-produto" method="POST" action="../acoes.php" enctype="multipart/form-data">
           <input type="hidden" name="acao" value="inserir" />
           <h1>Cadastro de produto</h1>
           <ul>
@@ -66,6 +81,25 @@ echo session_save_path();
           <div class="input-group">
             <label for="desconto">Desconto</label>
             <input type="text" name="desconto" id="desconto">
+          </div>
+          <div class="input-group">
+            <label for="categoria">Desconto</label>
+            <select type="text" name="desconto" id="categoria">
+              <option>SELECIONE</option>
+              <?php 
+              while($categoria = mysqli_fetch_array($resultado)){
+              ?>
+              <option value="<?= $categoria["id"]?>">
+                <?= $categoria["descricao"] ?>
+              </option>
+              <?php
+              }
+              ?>
+            </select>
+          </div>
+          <div class="input-group"> 
+              <label for="foto">Foto</label>
+              <input type="file" name="foto" id="foto" accept="image/*">
           </div>
           <button onclick="javascript:window.location.href = '../'">Cancelar</button>
           <button>Salvar</button>

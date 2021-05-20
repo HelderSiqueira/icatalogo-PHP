@@ -15,16 +15,23 @@ create table tbl_produto(
 );
 
 create table tbl_administrador (
-	id int primary key auto_increment,
+    id int primary key auto_increment,
     nome varchar(255) not null,
     usuario varchar(255) not null,
     senha varchar(255) not null
 );
 
+create table tbl_categoria (
+    id int primary key auto_increment,
+    descricao varchar(255) not null
+);
+
 insert into tbl_administrador (nome, usuario, senha) values ("Fulano de Tal","fulano","123456");
+
 insert into tbl_administrador (nome, usuario, senha) values ("Ciclano da Silva","ciclano","654321");
 
-
+# deleta a tabela tbl_produto
 drop table tbl_produto;
 
+# deleta o produto na tabela de produtos com o id ?
 delete from tbl_produto where id = ?;

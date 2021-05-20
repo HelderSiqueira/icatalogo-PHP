@@ -57,6 +57,9 @@ switch ($_POST["acao"]) {
     case "inserir":
         //chamamos a função de validação para verificicar se tem erros
         $erros = validarCampos();
+        
+        //var_dump($_FILES);
+        //exit();
 
         //se houver erros
         if (count($erros) > 0) {
@@ -94,6 +97,8 @@ switch ($_POST["acao"]) {
         } else {
             $mensagem = "Erro ao inserir o produto!";
         }
+
+        $_SESSION["mensagem"] = $mensagem;
 
         //redirecionamos para a página de listagem
         header("location: index.php");

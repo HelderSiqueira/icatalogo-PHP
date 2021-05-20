@@ -30,7 +30,7 @@
             ?>
             <header>
                 <button onclick="javascript:window.location.href ='./novo/'">Novo Produto</button>
-                <button>Adicionar Categoria</button>
+                <button onclick="javascript:window.location.href ='../categorias'">Adicionar Categoria</button>
             </header>
             <?php
             }
