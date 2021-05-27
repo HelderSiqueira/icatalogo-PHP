@@ -83,9 +83,9 @@ $resultado = mysqli_query($conexao, $sql);
             <input type="text" name="desconto" id="desconto">
           </div>
           <div class="input-group">
-            <label for="categoria">Desconto</label>
-            <select type="text" name="desconto" id="categoria">
-              <option>SELECIONE</option>
+            <label for="categoria">Categoria</label>
+            <select type="text" name="categoria" id="categoria">
+              <option value="">SELECIONE</option>
               <?php 
               while($categoria = mysqli_fetch_array($resultado)){
               ?>

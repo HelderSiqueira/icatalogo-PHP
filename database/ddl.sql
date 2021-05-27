@@ -35,3 +35,15 @@ drop table tbl_produto;
 
 # deleta o produto na tabela de produtos com o id ?
 delete from tbl_produto where id = ?;
+
+SELECT * FROM tbl_produto;
+
+ALTER TABLE tbl_produto
+ADD COLUMN categoria_id int,
+ADD FOREIGN KEY (categoria_id) REFERENCES tbl_categoria(id);
+
+TRUNCATE tbl_produto;
+
+SELECT p.*, c.descricao as categoria FROM tbl_produto p
+INNER JOIN tbl_categoria c ON p.categoria_id = c.id
+ORDER BY p.id DESC

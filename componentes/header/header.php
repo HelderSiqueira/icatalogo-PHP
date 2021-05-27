@@ -1,15 +1,15 @@
 <?php
-    if(!isset($_SESSION))session_start();
+if (!isset($_SESSION)) session_start();
 ?>
 
 <link href="/web-backend-a/icatalogo/componentes/header/header.css" rel="stylesheet" />
 <?php
 //verifica se ha mensagem na sessao
-if(isset($_SESSION["mensagem"])){
-?>    
+if (isset($_SESSION["mensagem"])) {
+?>
     <div class="mensagem">
         <?= $_SESSION["mensagem"]; ?>
-    </div>  
+    </div>
     <script lang="javascript">
         setTimeout(() => {
             document.querySelector(".mensagem").style.display = "nome";
@@ -27,24 +27,24 @@ if(isset($_SESSION["mensagem"])){
     </figure>
     <input type="search" placeholder="Pesquisar" />
     <?php
-    if(!isset($_SESSION["usuarioId"])){
+    if (!isset($_SESSION["usuarioId"])) {
     ?>
-    <nav>
-        <ul>
-            <a id="menu-admin">Administrador</a>
-        </ul>
-    </nav>
-    <div class="container-login" id="container-login">
-        <h1>Fazer login</h1>
-        <form method="POST" action="/web-backend-a/icatalogo/componentes/header/acoesLogin.php">
-        <input type="hidden" name="acao" value="login">
-            <input type="text" name="usuario" placeholder="Usuário" />
-            <input type="password" name="senha" placeholder="Senha" />
-            <button>Entrar</button>
-        </form>
-    </div>
+        <nav>
+            <ul>
+                <a id="menu-admin">Administrador</a>
+            </ul>
+        </nav>
+        <div class="container-login" id="container-login">
+            <h1>Fazer login</h1>
+            <form method="POST" action="/web-backend-a/icatalogo/componentes/header/acoesLogin.php">
+                <input type="hidden" name="acao" value="login" />
+                <input type="text" name="usuario" placeholder="Usuário" />
+                <input type="password" name="senha" placeholder="Senha" />
+                <button>Entrar</button>
+            </form>
+        </div>
     <?php
-    }else{
+    } else {
     ?>
         <nav>
             <ul>
@@ -59,7 +59,7 @@ if(isset($_SESSION["mensagem"])){
     ?>
 </header>
 <script lang="javascript">
-    function logout(){
+    function logout() {
         document.querySelector("#form-logout").submit();
     }
     //selecionamos o botão administrar e adicionamos o evento de click para ele
