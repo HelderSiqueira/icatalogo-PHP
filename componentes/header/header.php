@@ -23,9 +23,16 @@ if (isset($_SESSION["mensagem"])) {
 </div>
 <header class="header">
     <figure>
-        <img src="/web-backend-a/icatalogo/imgs/logo.png" />
+        <a href="/web-backend-a/icatalogo/produtos"> 
+            <img src="/web-backend-a/icatalogo/imgs/logo.png" />
+        </a>    
     </figure>
-    <input type="search" placeholder="Pesquisar" />
+    <form method="GET" action="/web-backend-a/icatalogo/produtos/index.php">
+        <input type="search" placeholder="Pesquisar" name="pesquisa"/>
+        <button>
+            <img src="/web-backend-a/icatalogo/imgs/lupa.svg">
+        </button>   
+    </form>    
     <?php
     if (!isset($_SESSION["usuarioId"])) {
     ?>

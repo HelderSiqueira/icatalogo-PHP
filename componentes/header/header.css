@@ -10,8 +10,23 @@
   justify-content: space-between;
 }
 
-.header input {
+.header > form {
   width: 50%;
+  display: flex;
+} 
+
+.header > form input {
+  flex: 1;
+  outline: none;
+}
+
+.header > form button {
+  margin-left: -8px; 
+  background-color: white;
+}
+
+.header > form button > img {
+  width: 20px;
 }
 
 .header > figure {
@@ -21,9 +36,15 @@
   background-color: var(--accentSecondary);
   border-radius: 50%;
   box-shadow: 0px 0px 10px 5px var(--boxShadow);
+
+  transition: 2s;
 }
 
-.header > figure > img {
+.header > figure:hover{
+  box-shadow: 0px 0px 20px 10px var(--boxShadow);
+}
+
+.header > figure img {
   margin: 5px 0px 0px 5px;
   width: 50px;
 }

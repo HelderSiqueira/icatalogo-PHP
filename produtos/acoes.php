@@ -143,4 +143,8 @@ switch ($_POST["acao"]) {
         header("location: index.php");
 
         break;
+
+    case "deletar";
+        
+        break;
 }
