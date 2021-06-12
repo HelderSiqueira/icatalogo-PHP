@@ -79,6 +79,76 @@ function validarCampos()
     return $erros;
 }
 
+function validarCamposEditar()
+{
+    //declara um vetor de erros
+    $erros = [];
+
+    //validar se campo descricao está preenchido
+    if (!isset($_POST["descricao"]) && $_POST["descricao"] == "") {
+        $erros[] = "O campo descrição é obrigatório";
+    }
+
+    //validar se o campo peso está preenchido
+    if (!isset($_POST["peso"]) && $_POST["peso"] == "") {
+        $erros[] = "O campo peso é obrigatório";
+        //validar se o campo peso é um número
+    } elseif (!is_numeric(str_replace(",", ".", $_POST["peso"]))) {
+        $erros[] = "O campo peso deve ser um número";
+    }
+
+    //validar se o campo quantidade está preenchido
+    if (!isset($_POST["quantidade"]) && $_POST["quantidade"] == "") {
+        $erros[] = "O campo quantidade é obrigatório";
+        //validar se o campo quantidade é um número
+    } elseif (!is_numeric(str_replace(",", ".", $_POST["quantidade"]))) {
+        $erros[] = "O campo quantidade deve ser um número";
+    }
+
+    if (!isset($_POST["cor"]) && $_POST["cor"] == "") {
+        $erros[] = "O campo cor é obrigatório";
+    }
+
+    if (!isset($_POST["valor"]) && $_POST["valor"] == "") {
+        $erros[] = "O campo valor é obrigatório";
+    } elseif (!is_numeric(str_replace(",", ".", $_POST["valor"]))) {
+        $erros[] = "O campo valor deve ser um número";
+    }
+
+    //se o campo desconto veio preenchido, testa se ele é numérico
+    if (isset($_POST["desconto"]) && $_POST["desconto"] != "" && !is_numeric(str_replace(",", ".", $_POST["desconto"]))) {
+        $erros[] = "O campo desconto deve ser um número";
+    }
+
+    //validacao de imagem 
+    if($_FILES["foto"] ["error"] != UPLOAD_ERR_NO_FILE){
+
+        $imagemInfos = getimagesize($_FILES["foto"] ["tmp_name"]);
+        
+        if(!$imagemInfos){
+            $erros[] = "O arquivo precisa ser uma imagem";
+        }elseif($_FILES["foto"] ["size"] > 1024 * 1024 * 2){
+            $erros[] = "O arquivo não pode ser maior que 2MB";
+        }
+
+        //verifica o formato da imagem (quadrada)
+        $width = $imagemInfos[0];
+        $height = $imagemInfos[1];
+
+        if($width != $height){
+            $erros[] = "A imagem precisa ser quadrada";
+        }
+    }
+
+    //validacao categorias 
+    if(!isset($_POST["categoria"]) || $_POST["categoria"] == ""){
+        $erros[] = "O campo categoria é obrigatório, você deve selecionar uma";
+    }
+
+    //retorna os erros
+    return $erros;
+}
+
 require("../database/conexao.php");
 
 switch ($_POST["acao"]) {
@@ -146,5 +216,104 @@ switch ($_POST["acao"]) {
 
     case "deletar";
         
+        $produtoId = $_POST["produtoId"];
+
+        //procura a imagem no banco pelo id do produto
+        $sqlImagem = " SELECT imagem FROM tbl_produto WHERE id = $produtoId ";
+        $resultado = mysqli_query($conexao, $sqlImagem) or die(mysqli_error($conexao));
+        $produto = mysqli_fetch_array($resultado);
+        //deletamos a imagem pelo nome
+        unlink("./fotos/" . $produto["imagem"]);
+
+        $sql = " DELETE FROM tbl_produto WHERE id = $produtoId ";
+        $resultado = mysqli_query($conexao, $sql); 
+
+        if($resultado){
+            $mensagem = "Produto excluído com exito";
+        }else{
+            $mensagem = "Houve um erro ao excluir o produto";
+        }
+
+        $_SESSION["mensagem"] = $mensagem;
+
+        header("location: index.php");
+
+        break;
+
+    case "editar":
+        
+        //chamamos a função de validação para verificicar se tem erros
+        $erros = validarCamposEditar();
+            
+        //se houver erros
+        if (count($erros) > 0) {
+    
+            //incluímos um campo erros na sessão e atribuímos o vetor de erros a ele
+            $_SESSION["erros"] = $erros;
+    
+            //redireciona para a págino do formulário
+            header("location: novo/index.php");
+    
+            exit();
+        }
+
+        $produtoId = $_POST["produtoId"];
+
+        //deletar a imagem antiga
+        if($_FILES["foto"] ["error"] != UPLOAD_ERR_NO_FILE){
+
+
+            $sql = " SELECT imagem FROM tbl_produto WHERE id = $produtoId ";
+
+            $resultado = mysqli_query($conexao, $sql);
+            $produto = mysqli_fetch_array($resultado);
+
+            unlink("./fotos/" .$produto["imagem"]); 
+
+            //subir imagem nova
+            $nomeArquivo = $_FILES["foto"] ["name"];
+
+            $extensao = pathinfo($nomeArquivo, PATHINFO_EXTENSION);
+    
+            $novoNomeArquivo = md5(microtime()) . ".$extensao";
+    
+            move_uploaded_file($_FILES["foto"] ["tmp_name"], "fotos/$novoNomeArquivo"); 
+
+        }
+
+        //atualizar a imagem no banco
+
+
+        $descricao = $_POST["descricao"];
+        $peso = str_replace(",", ".", $_POST["peso"]);
+        $quantidade = $_POST["quantidade"];
+        $cor = $_POST["cor"];
+        $tamanho = $_POST["tamanho"];
+        $valor = str_replace(",", ".", $_POST["valor"]);
+        $desconto = $_POST["desconto"] != "" ? $_POST["desconto"] : 0;
+        $categoriaId = $_POST["categoria"];
+
+        $sql = " UPDATE tbl_produto SET descricao = '$descricao', peso = $peso,
+                quantidade = $quantidade, cor = '$cor', tamanho = '$tamanho',
+                valor = $valor, desconto = $desconto, categoria_id = $categoriaId ";
+
+        $sql .= isset($novoNomeArquivo) ? " , imagem = '$novoNomeArquivo' " : "";
+
+        $sql .= " WHERE id = $produtoId ";
+
+        $resultado = mysqli_query($conexao, $sql) or die(mysqli_error($conexao));
+
+        if($resultado){
+            $mensagem = "Produto editado com sucesso";
+        }else{
+            $mensagem = "Ocorreu um erro ao editar o produto";
+        }
+
+        $_SESSION["mensagem"] = $mensagem;
+
+        header("location: index.php");
+
         break;
 }
+
+

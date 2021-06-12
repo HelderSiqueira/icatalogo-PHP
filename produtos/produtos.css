@@ -21,6 +21,7 @@
   width: 100%;
   min-width: 300px;
   max-width: 350px;
+  position: relative;
 
   border-radius: 6px;
   box-shadow: 0px 0px 2px 2px var(--boxShadow);
@@ -94,4 +95,23 @@
   margin-top: 16px;
   font-size: 16px;
   color: var(--textSecundary);
+}
+
+.acoes{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 5px 10px;
+  
+  background-color: var(--overlay);
+  border-radius: 6px;
+}
+
+.acoes img{
+  width: 20px;
+}
+
+.acoes img:hover{
+  transition: 0.2s;
+  transform: rotate(360deg) scale(1.1);
 }

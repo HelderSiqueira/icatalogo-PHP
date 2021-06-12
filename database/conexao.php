@@ -1,5 +1,9 @@
 <?php
 
+// senha do site - *AHZydO&OrjzxNy#4Sr4
+
+// senha db - /R@ykjYrD~9*Socn
+
 const HOST = "localhost";
 const USER = "root";
 const PASSWORD = "bcd127";

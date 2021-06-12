@@ -1,8 +1,4 @@
-<?php
-if (!isset($_SESSION)) session_start();
-?>
-
-<link href="/web-backend-a/icatalogo/componentes/header/header.css" rel="stylesheet" />
+<link href="/componentes/header/header.css" rel="stylesheet" />
 <?php
 //verifica se ha mensagem na sessao
 if (isset($_SESSION["mensagem"])) {
@@ -12,7 +8,7 @@ if (isset($_SESSION["mensagem"])) {
     </div>
     <script lang="javascript">
         setTimeout(() => {
-            document.querySelector(".mensagem").style.display = "nome";
+            document.querySelector(".mensagem").style.display = "none";
         }, 4000);
     </script>
 <?php
@@ -23,14 +19,24 @@ if (isset($_SESSION["mensagem"])) {
 </div>
 <header class="header">
     <figure>
-        <a href="/web-backend-a/icatalogo/produtos"> 
-            <img src="/web-backend-a/icatalogo/imgs/logo.png" />
+        <a href="/produtos"> 
+            <img src="/imgs/logo.png" />
         </a>    
     </figure>
-    <form method="GET" action="/web-backend-a/icatalogo/produtos/index.php">
-        <input type="search" placeholder="Pesquisar" name="pesquisa"/>
-        <button>
-            <img src="/web-backend-a/icatalogo/imgs/lupa.svg">
+    <form method="GET" action="/produtos/index.php">
+        <input type="text" id="pesquisar" value="<?= isset($_GET["p"]) ? $_GET["p"] : "" ?>" placeholder="Pesquisar" name="p"/>
+        <button <?= isset($_GET["p"]) && $_GET["p"] != "" ? "onClick='limparFiltro()'" : "" ?>>
+            <?php
+            if(isset($_GET["p"]) && $_GET["p"] !=""){
+            ?>
+                <img style="width: 15px" src="/imgs/close.svg"/>
+            <?php
+            }else{
+            ?>
+            <img src="/imgs/lupa.svg"/>
+            <?php
+            }
+            ?>
         </button>   
     </form>    
     <?php
@@ -43,7 +49,7 @@ if (isset($_SESSION["mensagem"])) {
         </nav>
         <div class="container-login" id="container-login">
             <h1>Fazer login</h1>
-            <form method="POST" action="/web-backend-a/icatalogo/componentes/header/acoesLogin.php">
+            <form method="POST" action="/componentes/header/acoesLogin.php">
                 <input type="hidden" name="acao" value="login" />
                 <input type="text" name="usuario" placeholder="Usuário" />
                 <input type="password" name="senha" placeholder="Senha" />
@@ -58,7 +64,7 @@ if (isset($_SESSION["mensagem"])) {
                 <a id="menu-admin" onclick="logout()">Sair</a>
             </ul>
         </nav>
-        <form id="form-logout" style="display: none" method="POST" action="/web-backend-a/icatalogo/componentes/header/acoesLogin.php">
+        <form id="form-logout" style="display: none" method="POST" action="/componentes/header/acoesLogin.php">
             <input type="hidden" name="acao" value="logout">
         </form>
     <?php
@@ -90,4 +96,9 @@ if (isset($_SESSION["mensagem"])) {
             containerLogin.style.height = "0px";
         }
     }
+
+    function limparFiltro(){
+        document.querySelector("#pesquisar").value = "";
+    }
+
 </script>
